@@ -1,25 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from 'react'
+import penaltyService from './services/penaltyService'
+import personService from './services/personService'
 
-function App() {
+const App = (props) => {
+  const [persons, setPersons] = useState([]) 
+  const [penalties, setPenalties] = useState([])
+
+  useEffect(() => {
+    personService
+    .getAllPersons()
+    .then(response => {
+      console.log(response.data)
+      setPersons(response.data)
+    })
+  }, [])
+
+  useEffect(() => {
+    penaltyService
+    .getAllPenalties()
+    .then(response =>  {
+      console.log(response.data)
+      setPenalties(response.data)
+    })
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  <div>
+    <h1>
+      Persons
+    </h1>
+    <ul>
+      {persons.map((person) => <li>{person.name}<br></br>
+      {penalties
+        .filter((penalty) => penalty.personId === person.id)
+        .map((penalty) => <span>{penalty.reason}: {penalty.sum/100} €</span>)}</li>)}
+      {/*Penalties: {penalties.map((penalty) => penalty.comment)}*/}
+    </ul>
+
+    <p>Hello world</p>
+  </div>
+  )
 }
 
-export default App;
+export default App
