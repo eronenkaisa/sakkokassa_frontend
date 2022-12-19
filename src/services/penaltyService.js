@@ -5,11 +5,13 @@ const getAllPenalties = () => {
   return axios.get(baseUrl)
 }
 
-
-
-/* const create = newObject => {
+const createPenalty = newObject => {
   return axios.post(baseUrl, newObject)
 }
+
+
+
+/* 
 
 const update = (id, newObject) => {
   return axios.put(`${baseUrl}/${id}`, newObject)
@@ -19,4 +21,4 @@ const deletePerson = (id, newObject) => {
   return axios.delete(`${baseUrl}/${id}`)
 } */
 
-export default { getAllPenalties }
+export default { getAllPenalties, createPenalty }
