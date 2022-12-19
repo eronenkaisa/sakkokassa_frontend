@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import penaltyService from './services/penaltyService'
 import personService from './services/personService'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
+import penaltyTypeService from './services/penaltyTypeService'
 
 const Person = (props) => {
   const handleDeletePerson = (event) => {
@@ -14,13 +15,13 @@ const Person = (props) => {
     <>
       <form>
         {props.person.name} <button onClick={handleDeletePerson}>Delete</button> <br></br>
-        {props.penalties.map((penalty) => <span>{penalty.reason}: {penalty.sum / 100} €</span>)}
+        {props.penalties.map((penalty) => <ul><span>{penalty.reason}: {penalty.sum / 100} €</span></ul>)} 
       </form>
     </>
   )
 }
 
-const AddPenalty = ({ persons }) => {
+const AddPenalty = ({ persons, penaltyTypes }) => {
   const initialValues
       = {
       personId: '',
@@ -53,28 +54,34 @@ const AddPenalty = ({ persons }) => {
           <option value="">Choose name</option>
         </Field>
         <br></br>
-        <label htmlFor='name'>Reason:</label>
+        <label htmlFor='reason'>Reason:</label>
         <Field
+          as='select'
           id='reason'
-          name='reason'
-          type='text'>
+          name='reason'>
+            {penaltyTypes.map((penaltyType) => (
+              <option value={penaltyType.type}>
+                {penaltyType.type}
+              </option>
+            ))}
+            <option value="">Choose type</option>
         </Field>
         <br></br>
-        <label htmlFor='name'>Date:</label>
+        <label htmlFor='date'>Date:</label>
         <Field
           id='date'
           name='date'
           type='date'>
         </Field>
         <br></br>
-        <label htmlFor='name'>Sum:</label>
+        <label htmlFor='sum'>Sum:</label>
         <Field
           id='sum'
           name='sum'
           type='number'>
         </Field>
         <br></br>
-        <label htmlFor='name'>Comment:</label>
+        <label htmlFor='comment'>Comment:</label>
         <Field
           id='comment'
           name='comment'
@@ -92,9 +99,11 @@ const App = (props) => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState([])
   const [penalties, setPenalties] = useState([])
+  const [penaltyTypes, setPenaltyTypes] = useState([])
   const [deleteType, setDeleteType] = useState('success')
   const [deleteMessage, setDeleteMessage] = useState([])
   const [updateMessage, setUpdateMessage] = useState([])
+  
 
 
 
@@ -113,6 +122,14 @@ const App = (props) => {
       .then(response => {
         console.log(response.data)
         setPenalties(response.data)
+      })
+  }, [])
+
+  useEffect(() => {
+    penaltyTypeService
+      .getAllPenaltyTypes()
+      .then(response => {
+        setPenaltyTypes(response.data)
       })
   }, [])
 
@@ -161,7 +178,7 @@ const App = (props) => {
   return (
     <div>
       <h1>
-        Persons
+        Sakkokassa
       </h1>
       <ul>
         {persons.map((person) => (
@@ -186,7 +203,7 @@ const App = (props) => {
 
       <br></br>
       Add penalty:
-      <AddPenalty persons={persons} />
+      <AddPenalty persons={persons} penaltyTypes={penaltyTypes}/>
     </div>
   )
 }
