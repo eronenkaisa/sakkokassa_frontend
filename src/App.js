@@ -15,7 +15,10 @@ const Person = (props) => {
     <>
       <form>
         {props.person.name} <button onClick={handleDeletePerson}>Delete</button> <br></br>
-        {props.penalties.map((penalty) => <ul><span>{penalty.reason}: {penalty.sum / 100} €</span></ul>)} 
+        {props.penalties.map((penalty) => {
+          const penaltyType = props?.penaltyTypes?.find((type) => type.id === penalty.type)
+        return <ul> {penaltyType?.type}: {penalty.sum / 100}€</ul>
+        })}
       </form>
     </>
   )
@@ -25,7 +28,7 @@ const AddPenalty = ({ persons, penaltyTypes }) => {
   const initialValues
       = {
       personId: '',
-      reason: '',
+      type: '',
       date: '',
       sum: '',
       comment: '',
@@ -54,13 +57,13 @@ const AddPenalty = ({ persons, penaltyTypes }) => {
           <option value="">Choose name</option>
         </Field>
         <br></br>
-        <label htmlFor='reason'>Reason:</label>
+        <label htmlFor='type'>Type:</label>
         <Field
           as='select'
-          id='reason'
-          name='reason'>
+          id='type'
+          name='type'>
             {penaltyTypes.map((penaltyType) => (
-              <option value={penaltyType.type}>
+              <option value={penaltyType.id}>
                 {penaltyType.type}
               </option>
             ))}
@@ -184,7 +187,7 @@ const App = (props) => {
         {persons.map((person) => (
           <li>
             <Person key={person.name} person={person} penalties={penalties
-              .filter((penalty) => penalty.personId === person.id)} deletePerson={deletePerson} />
+              .filter((penalty) => penalty.personId === person.id)} penaltyTypes={penaltyTypes} deletePerson={deletePerson} />
           </li>
         ))}
       </ul>
