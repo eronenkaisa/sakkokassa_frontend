@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import penaltyService from './services/penaltyService'
 import personService from './services/personService'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
@@ -12,11 +12,17 @@ const App = (props) => {
   const [newName, setNewName] = useState([])
   const [penalties, setPenalties] = useState([])
   const [penaltyTypes, setPenaltyTypes] = useState([])
+  const [selectedPerson, setSelectedPerson] = useState([])
   const [deleteType, setDeleteType] = useState('success')
   const [deleteMessage, setDeleteMessage] = useState([])
   const [updateMessage, setUpdateMessage] = useState([])
+
+  const currentPerson = useMemo(() => persons.find((person) => person.id === selectedPerson), [persons, selectedPerson])
   
-  
+  useEffect(() => {
+    console.log(currentPerson)
+  }, [currentPerson])
+
   useEffect(() => {
     personService
       .getAllPersons()
@@ -84,20 +90,35 @@ const App = (props) => {
   }
 
 
-
   return (
     <div>
       <h1>
         Sakkokassa
       </h1>
-      <ul>
-        {persons.map((person) => (
-          <li>
-            <Person key={person.name} person={person} penalties={penalties
-              .filter((penalty) => penalty.personId === person.id)} penaltyTypes={penaltyTypes} deletePerson={deletePerson} />
-          </li>
-        ))}
-      </ul>
+        Choose your name
+        <select
+          id='name'
+          name='personId'
+          value={selectedPerson}
+          onChange={e => setSelectedPerson(e.target.value)}>
+            <option>
+            -
+            </option>
+            {persons.map((person) => (
+            <option value={person.id}>
+              {person.name}
+            </option>
+
+          ))} 
+          
+        </select>  
+
+      {currentPerson && 
+        <div>
+          <Person person={currentPerson} penalties={penalties
+            .filter((penalty) => penalty.personId === currentPerson.id)} penaltyTypes={penaltyTypes} deletePerson={deletePerson}/>
+        </div>}
+      
 
       <br></br>
       <br></br>
