@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:3001/api/penalties'
+const baseUrl = `${process.env.REACT_APP_BACKEND_URL}/api/penalties`
 
 const getAllPenalties = () => {
   return axios.get(baseUrl)
