@@ -1,3 +1,5 @@
+import Button from "./Button"
+
 const Person = (props) => {
   const handleDeletePerson = (event) => {
     event.preventDefault()
@@ -5,19 +7,23 @@ const Person = (props) => {
       props.deletePerson(props.person.id, props.person.name)
     }
   }
-  
+
   return (
     <>
       <form>
-        {props.person.name} <button onClick={handleDeletePerson}>Delete</button> <br></br>
-        {props.penalties.map((penalty) => {
-          const penaltyType = props?.penaltyTypes?.find((type) => type.id === penalty.type)
-        return <ul> {penaltyType?.type}: {penalty.sum / 100}€</ul>
-        })}
+        <span className="text-lg font-bold">
+          Penalties:
+        </span>
+        <div>
+          {props.penalties.map((penalty) => {
+            const penaltyType = props?.penaltyTypes?.find((type) => type.id === penalty.type)
+            return <ul> {penaltyType?.type}: {penalty.sum / 100}€</ul>
+          })}
+        </div>
+        <Button onClick={handleDeletePerson} className="bg-red-200 !border-red-400 text-red-700 mt-2">Delete {props.person.name}</Button>
       </form>
     </>
   )
 }
 
 export default Person
-  

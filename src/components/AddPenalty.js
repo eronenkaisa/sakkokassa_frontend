@@ -1,5 +1,8 @@
 import penaltyService from '../services/penaltyService'
 import { Formik, Form, Field } from 'formik'
+import SelectField from './SelectField'
+import InputField from './InputField'
+import Button from './Button'
 
 const AddPenalty = ({ persons, penaltyTypes }) => {
   const initialValues
@@ -21,54 +24,67 @@ const AddPenalty = ({ persons, penaltyTypes }) => {
   return (
     <Formik initialValues={initialValues} onSubmit={onSubmit}>
       <Form>
-        <label htmlFor='name'>Name:</label>
+        <label htmlFor='name' className="mr-2">Name:</label>
         <Field
-          as='select'
+          as={SelectField}
           id='name'
-          name='personId'>
+          name='personId'
+          className="my-1"
+          >
           {persons.map((person) => (
-            <option value={person.id}>
+            <option key={person.id} value={person.id}>
               {person.name}
             </option>
           ))}
           <option value="">Choose name</option>
         </Field>
         <br></br>
-        <label htmlFor='type'>Type:</label>
+        <label htmlFor='type' className="mr-2">Type:</label>
         <Field
-          as='select'
+          as={SelectField}
           id='type'
-          name='type'>
+          name='type'
+          className="my-1"
+          >
             {penaltyTypes.map((penaltyType) => (
-              <option value={penaltyType.id}>
+              <option key= {penaltyType.id} value={penaltyType.id}>
                 {penaltyType.type}
               </option>
             ))}
             <option value="">Choose type</option>
         </Field>
         <br></br>
-        <label htmlFor='date'>Date:</label>
+        <label htmlFor='date' className="mr-2">Date:</label>
         <Field
+          as={InputField}
           id='date'
           name='date'
-          type='date'>
+          type='date'
+          className="my-1"
+          >
         </Field>
         <br></br>
-        <label htmlFor='sum'>Sum:</label>
+        <label htmlFor='sum' className="mr-2">Sum:</label>
         <Field
+        as={InputField}
           id='sum'
           name='sum'
-          type='number'>
+          type='number'
+          className="my-1"
+          >
         </Field>
         <br></br>
-        <label htmlFor='comment'>Comment:</label>
+        <label htmlFor='comment' className="mr-2">Comment:</label>
         <Field
+          as={InputField}
           id='comment'
           name='comment'
-          type='text'>
+          type='text'
+          className="my-1"
+          >
         </Field>
         <br></br>
-        <button type='submit'>Add penalty</button>
+        <Button type='submit' className="mt-1">Add penalty</Button>
       </Form>
     </Formik>
   )

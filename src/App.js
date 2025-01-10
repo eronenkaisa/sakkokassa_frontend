@@ -5,6 +5,12 @@ import { Formik, Form, Field, ErrorMessage } from 'formik'
 import penaltyTypeService from './services/penaltyTypeService'
 import AddPenalty from './components/AddPenalty'
 import Person from './components/Person'
+import Button from './components/Button'
+import InputField from './components/InputField'
+import SelectField from './components/SelectField'
+import Navbar from './components/Navbar'
+import About from './components/About'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 
 const App = (props) => {
@@ -91,50 +97,64 @@ const App = (props) => {
 
 
   return (
-    <div>
-      <h1>
-        Sakkokassa
-      </h1>
-        Choose your name
-        <select
-          id='name'
-          name='personId'
-          value={selectedPerson}
-          onChange={e => setSelectedPerson(e.target.value)}>
-            <option>
-            -
-            </option>
-            {persons.map((person) => (
-            <option value={person.id}>
-              {person.name}
-            </option>
-
-          ))} 
+    <div className='min-h-screen bg-blue-100'> 
+      <Router>
+        <Navbar/>
+          <Routes>
+            <Route path="/about" element={<About/>}/>
+            <Route path="/" element={
           
-        </select>  
+          <div className='container mx-auto px-4 py-8'>
+            <div className='shadow-2xl my-4 p-2 bg-white rounded-md'>
+              <span className="mr-2">
+                <p className='text-lg font-bold'> Welcome to Sakkokassa!</p> 
+                Choose your name: 
+              </span>
+              <SelectField
+                id='name'
+                name='personId'
+                value={selectedPerson}
+                onChange={e => setSelectedPerson(e.target.value)}>
+                  <option>
+                    Name
+                  </option>
+                  {persons.map((person) => (
+                    <option key={person.id} value={person.id}>
+                      {person.name}
+                    </option>
+                ))} 
+                
+              </SelectField>  
+            {currentPerson && 
+              <div>
+                <Person person={currentPerson} penalties={penalties
+                  .filter((penalty) => penalty.personId === currentPerson.id)} penaltyTypes={penaltyTypes} deletePerson={deletePerson}/>
+              </div>}
+            
+              </div>
 
-      {currentPerson && 
-        <div>
-          <Person person={currentPerson} penalties={penalties
-            .filter((penalty) => penalty.personId === currentPerson.id)} penaltyTypes={penaltyTypes} deletePerson={deletePerson}/>
-        </div>}
-      
-
-      <br></br>
-      <br></br>
-
-      Add person:
-      <form onSubmit={addPerson}>
-        <input
-          value={newName}
-          onChange={handleNameChange}
-        />
-        <button type="submit">Add Person</button>
-      </form>
-
-      <br></br>
-      Add penalty:
-      <AddPenalty persons={persons} penaltyTypes={penaltyTypes}/>
+            <div className='shadow-2xl my-4 p-2 bg-white rounded-md'>
+            <span className="text-lg font-bold">
+                Add person:
+              </span>
+              <form onSubmit={addPerson} className="flex gap-2">
+                <InputField
+                  value={newName}
+                  onChange={handleNameChange}
+                />
+                <Button type="submit">Add Person</Button>
+              </form>
+            </div>
+            <div className='shadow-2xl my-4 p-2 bg-white rounded-md'>
+              <span className="text-lg font-bold">
+                Add penalty:
+              </span>
+              <AddPenalty persons={persons} penaltyTypes={penaltyTypes}/>
+            </div>
+          </div>
+          }/>
+        </Routes>
+      </Router>
     </div>
   )
 }
