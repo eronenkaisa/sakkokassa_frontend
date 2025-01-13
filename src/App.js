@@ -10,7 +10,7 @@ import InputField from './components/InputField'
 import SelectField from './components/SelectField'
 import Navbar from './components/Navbar'
 import About from './components/About'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { HashRouter as Router, Route, Routes } from 'react-router-dom';
 
 
 const App = (props) => {

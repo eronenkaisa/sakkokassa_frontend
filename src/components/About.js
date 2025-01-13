@@ -7,6 +7,16 @@ const About = () => {
           This application provides an accounting service for penalties in sports teams or any group that needs a tool to keep track of penalties.
           The application is my ongoing personal project, aiming to showcase my knowledge to recruiters and serve as a programming playground. 
           For me, Sakkokassa is a project where I can apply the theories I learn at university to practical solution that help teams manage their everyday tasks. 
+
+          <p className="mt-1">
+            <span className="font-bold">
+              Note:&nbsp; 
+            </span>
+            <span>
+              It may take a moment for the database to wake up if the application has not been used in a while since the database is a using free version of MongoDB.
+            </span>
+          </p>
+         
           </p>
           <div className="mt-4">
             <p className="font-bold">What penalties?</p>
